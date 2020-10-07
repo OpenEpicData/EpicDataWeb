@@ -44,7 +44,11 @@
                       :key="item.title"
                       class="my-5"
                     >
-                      <h2 class="text-h4 font-weight-bold">
+                      <h2
+                        class="text-h4 font-weight-bold"
+                        @click="showNews(item.hyperlink)"
+                        style="cursor:pointer"
+                      >
                         {{ item.title }}
                       </h2>
 
