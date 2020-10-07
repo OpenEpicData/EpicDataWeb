@@ -1,5 +1,25 @@
 <template>
   <v-app>
+    <div>
+      <v-app-bar>
+        <v-tabs centered v-model="tab" icons-and-text color="orange darken-4">
+          <v-tabs-slider></v-tabs-slider>
+
+          <v-tab href="#news">
+            <h3>
+              游戏新闻（机器学习）
+            </h3>
+          </v-tab>
+
+          <v-tab href="#free-games">
+            <h3>
+              领取免费游戏
+            </h3>
+          </v-tab>
+        </v-tabs>
+      </v-app-bar>
+    </div>
+
     <v-container fluid>
       <v-main>
         <div class="text-center" v-if="!hyperlink">
@@ -13,27 +33,7 @@
           </div>
         </div>
 
-        <div class="mt-12">
-          <v-row justify="end">
-            <v-col cols="12" md="5">
-              <v-tabs v-model="tab" icons-and-text color="orange darken-4">
-                <v-tabs-slider></v-tabs-slider>
-
-                <v-tab href="#news">
-                  <h3>
-                    游戏新闻（机器学习）
-                  </h3>
-                </v-tab>
-
-                <v-tab href="#free-games">
-                  <h3>
-                    领取免费游戏
-                  </h3>
-                </v-tab>
-              </v-tabs>
-            </v-col>
-          </v-row>
-
+        <div>
           <v-tabs-items v-model="tab">
             <v-tab-item value="news">
               <v-row justify="space-between">
