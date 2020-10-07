@@ -185,6 +185,7 @@ export default {
     },
     async reload() {
       await this.fetchNews();
+      this.searchTag = null;
     }
   }
 };
