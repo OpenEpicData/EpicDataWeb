@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid>
       <v-main>
-        <div class="text-center">
+        <div class="text-center" v-if="!hyperlink">
           <div class="text-h2 font-weight-black">
             <v-icon size="128" color="orange darken-4">
               mdi-chart-box-outline
@@ -14,8 +14,8 @@
         </div>
 
         <div class="mt-12">
-          <v-row justify="center">
-            <v-col cols="12" md="10">
+          <v-row justify="end">
+            <v-col cols="12" md="5">
               <v-tabs v-model="tab" icons-and-text color="orange darken-4">
                 <v-tabs-slider></v-tabs-slider>
 
@@ -36,8 +36,32 @@
 
           <v-tabs-items v-model="tab">
             <v-tab-item value="news">
-              <v-row justify="center">
-                <v-col cols="12" md="5">
+              <v-row justify="space-between">
+                <v-col cols="12" md="6">
+                  <div
+                    style="position:sticky;top:0;height:100vh;width:100%"
+                    v-if="hyperlink"
+                  >
+                    <iframe
+                      :src="hyperlink"
+                      frameborder="0"
+                      height="100%"
+                      width="100%"
+                    ></iframe>
+                  </div>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                  <v-chip
+                    dark
+                    v-if="searchTag"
+                    color="orange"
+                    close
+                    @click:close="reload()"
+                  >
+                    {{ searchTag }}
+                  </v-chip>
+
                   <div v-if="news">
                     <div
                       v-for="item in news.data"
@@ -57,29 +81,17 @@
                       </h4>
 
                       <v-chip
-                        v-for="(tag, k) in item.newsTags"
+                        v-for="(tag, k) in uniqueTagTitle(item.newsTags)"
                         :key="k"
                         class="my-2 mr-2"
+                        link
+                        @click="search(tag.title)"
                       >
                         {{ tag.title }} | {{ tag.similarity * 100 }}%
                       </v-chip>
 
                       <v-divider class="my-5" />
                     </div>
-                  </div>
-                </v-col>
-
-                <v-col cols="12" md="5">
-                  <div
-                    style="position:sticky;top:0;height:90vh"
-                    v-if="hyperlink"
-                  >
-                    <iframe
-                      :src="hyperlink"
-                      frameborder="0"
-                      height="100%"
-                      width="100%"
-                    ></iframe>
                   </div>
                 </v-col>
               </v-row>
@@ -129,6 +141,7 @@
 </template>
 
 <script>
+import { unionBy } from "lodash";
 export default {
   name: "App",
 
@@ -140,19 +153,38 @@ export default {
       "https://bird.ioliu.cn/v1?url=https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=zh-CN&country=TW&allowCountries=TW",
     d: null,
     news: null,
-    newsPath:
-      "https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/spider/news/"
+    newsPath: "https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/",
+    searchTag: null
   }),
   async mounted() {
     const freeGames = await (await fetch(this.url)).json();
     this.d = freeGames.data.Catalog.searchStore.elements;
 
-    const news = await (await fetch(this.newsPath)).json();
-    this.news = news.news;
+    await this.fetchNews();
   },
   methods: {
+    async fetchNews() {
+      console.log(1);
+      const resNews = await (await fetch(this.newsPath)).json();
+      this.news = resNews.news;
+      this.hyperlink = this.news.data[0].hyperlink;
+    },
     showNews(hyperlink) {
       this.hyperlink = hyperlink;
+    },
+    async search(tagTitle) {
+      this.searchTag = tagTitle;
+      const news = await (
+        await fetch(this.newsPath + `?tagTitle=${tagTitle}`)
+      ).json();
+      this.news = news.news;
+      this.hyperlink = this.news.data[0].hyperlink;
+    },
+    uniqueTagTitle(data) {
+      return unionBy(data, "title");
+    },
+    async reload() {
+      await this.fetchNews();
     }
   }
 };
