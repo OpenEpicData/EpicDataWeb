@@ -43,7 +43,6 @@
                       v-for="item in news.data"
                       :key="item.title"
                       class="my-5"
-                      @mouseover="showNews(item.hyperlink)"
                     >
                       <h2 class="text-h4 font-weight-bold">
                         {{ item.title }}
