@@ -1,102 +1,10 @@
 <template>
   <v-app>
-    <div>
-      <v-app-bar>
-        <v-tabs centered v-model="tab" icons-and-text color="orange darken-4">
-          <v-tabs-slider></v-tabs-slider>
-
-          <v-tab href="#news">
-            <h3>
-              游戏新闻（机器学习）
-            </h3>
-          </v-tab>
-
-          <v-tab href="#free-games">
-            <h3>
-              领取免费游戏
-            </h3>
-          </v-tab>
-        </v-tabs>
-      </v-app-bar>
-    </div>
-
     <v-container fluid>
       <v-main>
-        <div class="text-center" v-if="!hyperlink">
-          <div class="text-h2 font-weight-black">
-            <v-icon size="128" color="orange darken-4">
-              mdi-chart-box-outline
-            </v-icon>
-
-            <br />
-            EpicData
-          </div>
-        </div>
-
+        <router-view />
         <div>
           <v-tabs-items v-model="tab">
-            <v-tab-item value="news">
-              <v-row justify="space-between">
-                <v-col cols="12" md="6">
-                  <div
-                    style="position:sticky;top:0;height:100vh;width:100%"
-                    v-if="hyperlink"
-                  >
-                    <iframe
-                      :src="hyperlink"
-                      frameborder="0"
-                      height="100%"
-                      width="100%"
-                    ></iframe>
-                  </div>
-                </v-col>
-
-                <v-col cols="12" md="6">
-                  <v-chip
-                    dark
-                    v-if="searchTag"
-                    color="orange"
-                    close
-                    @click:close="reload()"
-                  >
-                    {{ searchTag }}
-                  </v-chip>
-
-                  <div v-if="news">
-                    <div
-                      v-for="item in news.data"
-                      :key="item.title"
-                      class="my-5"
-                    >
-                      <h2
-                        class="text-h4 font-weight-bold"
-                        @click="showNews(item.hyperlink)"
-                        style="cursor:pointer"
-                      >
-                        {{ item.title }}
-                      </h2>
-
-                      <h4 class="subtitle-1 orange--text text--darken-4">
-                        {{ item.description }}
-                      </h4>
-
-                      <v-chip
-                        v-for="(tag, k) in uniqueTagTitle(item.newsTags)"
-                        :key="k"
-                        class="my-2 mr-2"
-                        link
-                        @click="search(tag.title)"
-                      >
-                        {{ tag.title }} | {{ tag.similarity * 100 }}%
-                      </v-chip>
-
-                      <v-divider class="my-5" />
-                    </div>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-tab-item>
-
             <v-tab-item value="free-games">
               <v-row justify="center">
                 <v-col cols="12" md="10">
@@ -137,11 +45,42 @@
         </div>
       </v-main>
     </v-container>
+
+    <v-navigation-drawer permanent right app>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            EpicData
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            专注于游戏数据
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense nav>
+        <v-list-item
+          v-for="item in drawerItems"
+          :key="item.title"
+          link
+          :to="item.link"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
   </v-app>
 </template>
 
 <script>
-import { unionBy } from "lodash";
 export default {
   name: "App",
 
@@ -154,39 +93,17 @@ export default {
     d: null,
     news: null,
     newsPath: "https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/",
-    searchTag: null
+    searchTag: null,
+    drawerItems: [
+      { title: "游戏新闻", icon: "mdi-newspaper", link: "news" },
+      { title: "免费游戏", icon: "mdi-gift" }
+    ]
   }),
   async mounted() {
     const freeGames = await (await fetch(this.url)).json();
     this.d = freeGames.data.Catalog.searchStore.elements;
 
     await this.fetchNews();
-  },
-  methods: {
-    async fetchNews() {
-      console.log(1);
-      const resNews = await (await fetch(this.newsPath)).json();
-      this.news = resNews.news;
-      this.hyperlink = this.news.data[0].hyperlink;
-    },
-    showNews(hyperlink) {
-      this.hyperlink = hyperlink;
-    },
-    async search(tagTitle) {
-      this.searchTag = tagTitle;
-      const news = await (
-        await fetch(this.newsPath + `?tagTitle=${tagTitle}`)
-      ).json();
-      this.news = news.news;
-      this.hyperlink = this.news.data[0].hyperlink;
-    },
-    uniqueTagTitle(data) {
-      return unionBy(data, "title");
-    },
-    async reload() {
-      await this.fetchNews();
-      this.searchTag = null;
-    }
   }
 };
 </script>
