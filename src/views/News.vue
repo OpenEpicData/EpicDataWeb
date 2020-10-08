@@ -55,6 +55,12 @@
             <v-divider class="my-5" />
           </div>
         </div>
+
+        <v-progress-linear
+          v-else
+          indeterminate
+          color="orange"
+        ></v-progress-linear>
       </v-col>
     </v-row>
   </div>

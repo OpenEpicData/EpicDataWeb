@@ -14,6 +14,11 @@ const routes: Array<RouteConfig> = [
     path: "/news",
     name: "News",
     component: () => import("../views/News.vue")
+  },
+  {
+    path: "/free-games",
+    name: "FreeGame",
+    component: () => import("../views/FreeGame.vue")
   }
 ];
 
