@@ -51,8 +51,6 @@ export default {
     url:
       "https://bird.ioliu.cn/v1?url=https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=zh-CN&country=TW&allowCountries=TW",
     data: null,
-    news: null,
-    newsPath: "https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/",
     searchTag: null,
     drawerItems: [
       { title: "游戏新闻", icon: "mdi-newspaper", link: "news" },
@@ -62,8 +60,6 @@ export default {
   async mounted() {
     const freeGames = await (await fetch(this.url)).json();
     this.data = freeGames.data.Catalog.searchStore.elements;
-
-    await this.fetchNews();
   }
 };
 </script>

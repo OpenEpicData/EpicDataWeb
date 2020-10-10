@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <div>
       <v-main>
         <router-view />
       </v-main>
-    </v-container>
+    </div>
 
     <v-navigation-drawer permanent right app>
       <v-list-item>
@@ -46,6 +46,7 @@ export default {
 
   data: () => ({
     drawerItems: [
+      { title: "搜索", icon: "mdi-magnify", link: "/" },
       { title: "游戏新闻", icon: "mdi-newspaper", link: "news" },
       { title: "免费游戏", icon: "mdi-gift", link: "free-games" }
     ]

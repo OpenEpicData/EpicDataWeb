@@ -71,20 +71,26 @@ import { unionBy } from "lodash";
 export default {
   name: "News",
 
-  data: () => ({
-    hyperlink: null,
-    showModal: false,
-    news: null,
-    newsPath: "https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/",
-    searchTag: null
-  }),
+  data() {
+    return {
+      searchTag: this.$store.state.search.tagTitle,
+      hyperlink: null,
+      showModal: false,
+      newsPath:
+        "https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/"
+    };
+  },
   async mounted() {
-    await this.fetchNews();
+    await this.$store.dispatch("pushNews");
+    this.fetchNews();
+  },
+  computed: {
+    news: function() {
+      return this.$store.state.news;
+    }
   },
   methods: {
     async fetchNews() {
-      const resNews = await (await fetch(this.newsPath)).json();
-      this.news = resNews.news;
       this.hyperlink = this.news.data[0].hyperlink;
     },
     showNews(hyperlink) {
@@ -92,18 +98,24 @@ export default {
     },
     async search(tagTitle) {
       this.searchTag = tagTitle;
-      const news = await (
-        await fetch(this.newsPath + `?tagTitle=${tagTitle}`)
-      ).json();
-      this.news = news.news;
-      this.hyperlink = this.news.data[0].hyperlink;
+      const data = {
+        tagTitle: this.searchTag
+      };
+      this.$store.commit("setSearch", data);
+      await this.$store.dispatch("pushNews");
     },
     uniqueTagTitle(data) {
       return unionBy(data, "title");
     },
     async reload() {
-      await this.fetchNews();
-      this.searchTag = null;
+      this.searchTag = "";
+
+      const data = {
+        tagTitle: this.searchTag
+      };
+
+      this.$store.commit("setSearch", data);
+      await this.$store.dispatch("pushNews");
     }
   }
 };
