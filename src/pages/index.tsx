@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 import styles from './index.less';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 const { Title } = Typography;
 
 const menuItems = [
@@ -25,17 +25,16 @@ export default () => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Layout className={styles['site-layout']}>
-        <Header className={styles['site-layout-background']} style={{ padding: 0 }} />
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item>EpicData</Breadcrumb.Item>
+            <Breadcrumb.Item>新闻</Breadcrumb.Item>
           </Breadcrumb>
           <div className={styles['site-layout-background']} style={{ padding: 24, minHeight: 360 }}>
-            Bill is a cat.
+            正在开发中
         </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>@2020 EpicData</Footer>
       </Layout>
 
       <Sider collapsible>
