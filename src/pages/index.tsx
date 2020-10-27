@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout, Menu, Breadcrumb, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col, Tag } from 'antd';
 import {
   PaperClipOutlined,
   GiftOutlined
@@ -21,22 +21,31 @@ const menuItems = [
 ]
 
 export default () => {
+  const [data, setData] = useState([]);
+  const [newsHyperLink, setNewsHyperLink] = useState([])
+  useEffect(() => {
+    asyncFetch();
+  }, []);
+
+  const asyncFetch = () => {
+    fetch('https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/?tagTitle=')
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json.news.data)
+        setNewsHyperLink(json.news.data[0].hyperlink)
+      })
+      .catch(() => {
+        message.error('获取数据失败', 10)
+      });
+  };
+
+  const switchNews = (hyperlink: React.SetStateAction<never[]>) => {
+    message.info('正在拉取新闻', 1)
+    setNewsHyperLink(hyperlink)
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Layout className={styles['site-layout']}>
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>EpicData</Breadcrumb.Item>
-            <Breadcrumb.Item>新闻</Breadcrumb.Item>
-          </Breadcrumb>
-          <div className={styles['site-layout-background']} style={{ padding: 24, minHeight: 360 }}>
-            正在开发中
-        </div>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>@2020 EpicData</Footer>
-      </Layout>
-
       <Sider collapsible>
         <div>
           <Title level={3} className={styles.logo} style={{ color: '#fff' }}>
@@ -53,6 +62,48 @@ export default () => {
           })}
         </Menu>
       </Sider>
-    </Layout>
+
+      <Layout className={styles['site-layout']}>
+        <Content style={{ margin: '0 16px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>EpicData</Breadcrumb.Item>
+            <Breadcrumb.Item>新闻</Breadcrumb.Item>
+          </Breadcrumb>
+
+          <div className={styles['site-layout-background']} style={{ padding: 24, minHeight: 360 }}>
+            <Row gutter={20} style={{ height: '90vh', overflowY: 'auto' }}>
+              <Col span={12} style={{ position: 'sticky', top: '0', height: '90vh', width: '100%' }}>
+                <iframe
+                  src={newsHyperLink.toString()}
+                  frameBorder="0"
+                  height="100%"
+                  width="100%"
+                ></iframe>
+
+              </Col>
+
+              <Col className="gutter-row" span={12}>
+                <Timeline mode="left">
+                  {[...data].map((item: any, i) => {
+                    return (
+                      <Timeline.Item key={i}>
+                        <Title level={3}>
+                          <span onClick={() => { switchNews(item.hyperlink) }} style={{ cursor: 'pointer' }}>
+                            {item.title}
+                          </span>
+                        </Title>
+                        <Title level={5}>{item.description}</Title>
+                      </Timeline.Item>
+                    )
+                  })}
+                </Timeline>
+              </Col>
+            </Row>
+          </div>
+
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>@2020 EpicData</Footer>
+      </Layout>
+    </Layout >
   );
 }
