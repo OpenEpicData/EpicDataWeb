@@ -81,7 +81,7 @@ export default () => {
               </Col>
 
               <Col className="gutter-row" span={12}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb style={{ margin: '16px 0', position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10 }}>
                   <Breadcrumb.Item>EpicData</Breadcrumb.Item>
                   <Breadcrumb.Item>新闻</Breadcrumb.Item>
 
