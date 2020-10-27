@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col, Tag } from 'antd';
+import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col } from 'antd';
 import {
   PaperClipOutlined,
   GiftOutlined
@@ -23,6 +23,7 @@ const menuItems = [
 export default () => {
   const [data, setData] = useState([]);
   const [newsHyperLink, setNewsHyperLink] = useState([])
+
   useEffect(() => {
     asyncFetch();
   }, []);
