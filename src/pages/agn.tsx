@@ -2,6 +2,7 @@ import React from 'react';
 import { Descriptions, Button, Rate, Typography } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 import styles from './agn.less';
+import { Link } from 'umi';
 
 const { Title } = Typography
 const games = [
@@ -27,7 +28,7 @@ export default () => {
   return (
     <div>
       <Button block size="large" type="primary">
-        返回主页
+        <Link to='/'>返回主页</Link>
       </Button>
 
       <Title level={1}>
