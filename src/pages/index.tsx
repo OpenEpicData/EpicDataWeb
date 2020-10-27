@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col } from 'antd';
+import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col, Button } from 'antd';
 import {
   PaperClipOutlined,
-  GiftOutlined
+  GiftOutlined,
+  RedoOutlined
 } from '@ant-design/icons';
 import styles from './index.less';
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider, Header } = Layout;
 const { Title } = Typography;
 
 const menuItems = [
@@ -29,6 +30,7 @@ export default () => {
   }, []);
 
   const asyncFetch = () => {
+    message.info('正在请求数据', 1)
     fetch('https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/?tagTitle=')
       .then((response) => response.json())
       .then((json) => {
@@ -66,11 +68,6 @@ export default () => {
 
       <Layout className={styles['site-layout']}>
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>EpicData</Breadcrumb.Item>
-            <Breadcrumb.Item>新闻</Breadcrumb.Item>
-          </Breadcrumb>
-
           <div className={styles['site-layout-background']} style={{ padding: 24, minHeight: 360 }}>
             <Row gutter={20} style={{ height: '90vh', overflowY: 'auto' }}>
               <Col span={12} style={{ position: 'sticky', top: '0', height: '90vh', width: '100%' }}>
@@ -84,6 +81,16 @@ export default () => {
               </Col>
 
               <Col className="gutter-row" span={12}>
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  <Breadcrumb.Item>EpicData</Breadcrumb.Item>
+                  <Breadcrumb.Item>新闻</Breadcrumb.Item>
+
+                  <Button onClick={() => { asyncFetch() }}>
+                    刷新
+                  <RedoOutlined />
+                  </Button>
+                </Breadcrumb>
+
                 <Timeline mode="left">
                   {[...data].map((item: any, i) => {
                     return (
