@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col, Button } from 'antd';
 import {
   PaperClipOutlined,
-  GiftOutlined,
+  StarOutlined,
   RedoOutlined
 } from '@ant-design/icons';
 import styles from './index.less';
+import { Link } from 'umi';
 
 const { Content, Footer, Sider, Header } = Layout;
 const { Title } = Typography;
@@ -13,11 +14,13 @@ const { Title } = Typography;
 const menuItems = [
   {
     text: '游戏新闻',
+    href: '/',
     icon: <PaperClipOutlined />
   },
   {
-    text: '免费游戏',
-    icon: <GiftOutlined />
+    text: 'AGN',
+    href: '/agn',
+    icon: <StarOutlined />
   }
 ]
 
@@ -59,7 +62,7 @@ export default () => {
           {[...menuItems].map((element, i) => {
             return (
               <Menu.Item key={i} icon={element.icon}>
-                {element.text}
+                <Link to={element.href}>{element.text}</Link>
               </Menu.Item>
             )
           })}
