@@ -26,7 +26,7 @@ const games = [
 
 export default () => {
   return (
-    <div>
+    <div style={{ overflowY: 'auto' }}>
       <Button block size="large" type="primary">
         <Link to='/'>返回主页</Link>
       </Button>
