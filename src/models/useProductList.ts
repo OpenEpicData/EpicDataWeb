@@ -1,7 +1,10 @@
 import { useRequest } from 'umi';
 import { queryProductList } from '@/services/product';
 
-export default function useProductList(params: { pageSize: number; current: number }) {
+export default function useProductList(params: {
+  pageSize: number;
+  current: number;
+}) {
   const msg = useRequest(() => queryUserList(params));
 
   const deleteProducts = async (id: string) => {

@@ -1,10 +1,10 @@
 import { Table, Popconfirm, Button } from 'antd';
 import React from 'react';
 
-const ProductList: React.FC<{ products: { name: string }[]; onDelete: (id: string) => void }> = ({
-  onDelete,
-  products,
-}) => {
+const ProductList: React.FC<{
+  products: { name: string }[];
+  onDelete: (id: string) => void;
+}> = ({ onDelete, products }) => {
   const columns = [
     {
       title: 'Name',

@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react';
 export default function useAuthModel() {
-  const [news] = useState(null)
+  const [news] = useState(null);
   return {
     news,
-  }
+  };
 }

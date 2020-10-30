@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Breadcrumb, Typography, Timeline, message, Row, Col, Button } from 'antd';
+import {
+  Layout,
+  Menu,
+  Breadcrumb,
+  Typography,
+  Timeline,
+  message,
+  Row,
+  Col,
+  Button,
+} from 'antd';
 import {
   PaperClipOutlined,
   StarOutlined,
-  RedoOutlined
+  RedoOutlined,
 } from '@ant-design/icons';
 import styles from './index.less';
 import { Link } from 'umi';
@@ -15,40 +25,42 @@ const menuItems = [
   {
     text: '游戏新闻',
     href: '/',
-    icon: <PaperClipOutlined />
+    icon: <PaperClipOutlined />,
   },
   {
     text: 'AGN',
     href: '/agn',
-    icon: <StarOutlined />
-  }
-]
+    icon: <StarOutlined />,
+  },
+];
 
 export default () => {
   const [data, setData] = useState([]);
-  const [newsHyperLink, setNewsHyperLink] = useState([])
+  const [newsHyperLink, setNewsHyperLink] = useState([]);
 
   useEffect(() => {
     asyncFetch();
   }, []);
 
   const asyncFetch = () => {
-    message.info('正在请求数据', 1)
-    fetch('https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/?tagTitle=')
+    message.info('正在请求数据', 1);
+    fetch(
+      'https://bird.ioliu.cn/v1?url=http://api.epicdata.net:1234/news/?tagTitle=',
+    )
       .then((response) => response.json())
       .then((json) => {
-        setData(json.news.data)
-        setNewsHyperLink(json.news.data[0].hyperlink)
+        setData(json.news.data);
+        setNewsHyperLink(json.news.data[0].hyperlink);
       })
       .catch(() => {
-        message.error('获取数据失败', 10)
+        message.error('获取数据失败', 10);
       });
   };
 
   const switchNews = (hyperlink: React.SetStateAction<never[]>) => {
-    message.info('正在拉取新闻', 1)
-    setNewsHyperLink(hyperlink)
-  }
+    message.info('正在拉取新闻', 1);
+    setNewsHyperLink(hyperlink);
+  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -64,33 +76,55 @@ export default () => {
               <Menu.Item key={i} icon={element.icon}>
                 <Link to={element.href}>{element.text}</Link>
               </Menu.Item>
-            )
+            );
           })}
         </Menu>
       </Sider>
 
       <Layout className={styles['site-layout']}>
         <Content style={{ margin: '0 16px' }}>
-          <div className={styles['site-layout-background']} style={{ padding: 24, minHeight: 360 }}>
+          <div
+            className={styles['site-layout-background']}
+            style={{ padding: 24, minHeight: 360 }}
+          >
             <Row gutter={20} style={{ height: '90vh', overflowY: 'auto' }}>
-              <Col span={12} style={{ position: 'sticky', top: '0', height: '90vh', width: '100%' }}>
+              <Col
+                span={12}
+                style={{
+                  position: 'sticky',
+                  top: '0',
+                  height: '90vh',
+                  width: '100%',
+                }}
+              >
                 <iframe
                   src={newsHyperLink.toString()}
                   frameBorder="0"
                   height="100%"
                   width="100%"
                 ></iframe>
-
               </Col>
 
               <Col className="gutter-row" span={12}>
-                <Breadcrumb style={{ margin: '16px 0', position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10 }}>
+                <Breadcrumb
+                  style={{
+                    margin: '16px 0',
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: 'white',
+                    zIndex: 10,
+                  }}
+                >
                   <Breadcrumb.Item>EpicData</Breadcrumb.Item>
                   <Breadcrumb.Item>新闻</Breadcrumb.Item>
 
-                  <Button onClick={() => { asyncFetch() }}>
+                  <Button
+                    onClick={() => {
+                      asyncFetch();
+                    }}
+                  >
                     刷新
-                  <RedoOutlined />
+                    <RedoOutlined />
                   </Button>
                 </Breadcrumb>
 
@@ -99,22 +133,26 @@ export default () => {
                     return (
                       <Timeline.Item key={i}>
                         <Title level={3}>
-                          <span onClick={() => { switchNews(item.hyperlink) }} style={{ cursor: 'pointer' }}>
+                          <span
+                            onClick={() => {
+                              switchNews(item.hyperlink);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                          >
                             {item.title}
                           </span>
                         </Title>
                         <Title level={5}>{item.description}</Title>
                       </Timeline.Item>
-                    )
+                    );
                   })}
                 </Timeline>
               </Col>
             </Row>
           </div>
-
         </Content>
         <Footer style={{ textAlign: 'center' }}>@2020 EpicData</Footer>
       </Layout>
-    </Layout >
+    </Layout>
   );
-}
+};
