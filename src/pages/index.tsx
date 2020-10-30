@@ -43,10 +43,7 @@ export default () => {
   };
 
   return (
-    <div
-      className={styles['site-layout-background']}
-      style={{ padding: 24, minHeight: 360 }}
-    >
+    <div className={styles['site-layout-background']}>
       <Row gutter={20} style={{ height: '90vh', overflowY: 'auto' }}>
         <Col
           span={12}

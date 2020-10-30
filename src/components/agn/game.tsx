@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
+import dayjs from 'dayjs';
+
 import {
   Info,
   InfoCaption,
@@ -45,6 +47,7 @@ interface IProp {
   subtitle: string;
   appid: number;
   link: string;
+  type: string;
 }
 
 export const GameCard = React.memo(function GalaxyCard(props: IProp) {
@@ -60,7 +63,10 @@ export const GameCard = React.memo(function GalaxyCard(props: IProp) {
           ]}
         />
       </NoSsr>
-      <Link href={props.link} target="_black">
+      <Link
+        href={`https://store.steampowered.com/app/${props.appid}`}
+        target="_black"
+      >
         <Card className={styles.card}>
           <CardMedia
             classes={mediaStyles}
@@ -70,7 +76,7 @@ export const GameCard = React.memo(function GalaxyCard(props: IProp) {
             <Info useStyles={useGalaxyInfoStyles}>
               <InfoSubtitle>{props.subtitle}</InfoSubtitle>
               <InfoTitle>{props.title}</InfoTitle>
-              <InfoCaption>不玩吃亏榜</InfoCaption>
+              <InfoCaption>{props.type}</InfoCaption>
             </Info>
           </Box>
         </Card>

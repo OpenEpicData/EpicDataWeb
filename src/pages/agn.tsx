@@ -73,7 +73,7 @@ const games = [
 export default () => {
   return (
     <div style={styles.body}>
-      <div style={{ margin: '16px' }}>
+      <div>
         <Title level={1}>唯一权威 AGN 评分 | 审美自测表</Title>
 
         <div>
@@ -89,7 +89,7 @@ export default () => {
                   xxl={4}
                   key={i}
                 >
-                  <GameCard {...item} key={i} />
+                  <GameCard {...item} key={i} type="不玩吃亏榜" />
                 </Col>
               );
             })}

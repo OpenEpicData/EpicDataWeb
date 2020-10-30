@@ -34,6 +34,7 @@
     "@mui-treasury/utils": "^0.4.1",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.24",
+    "dayjs": "^1.9.4",
     "lint-staged": "^10.0.7",
     "prettier": "2.1.2",
     "react": "^16.12.0",
@@ -42,5 +43,7 @@
     "umi": "^3.2.24",
     "yorkie": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "antd-dayjs-webpack-plugin": "^1.0.1"
+  }
 }

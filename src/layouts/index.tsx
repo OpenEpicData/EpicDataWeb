@@ -1,6 +1,10 @@
 import React from 'react';
 import { Layout, Menu, Typography } from 'antd';
-import { PaperClipOutlined, StarOutlined } from '@ant-design/icons';
+import {
+  PaperClipOutlined,
+  StarOutlined,
+  AppstoreOutlined,
+} from '@ant-design/icons';
 import styles from './index.less';
 import { Link } from 'umi';
 
@@ -12,6 +16,11 @@ const menuItems = [
     text: '游戏新闻',
     href: '/',
     icon: <PaperClipOutlined />,
+  },
+  {
+    text: '游戏库',
+    href: '/games',
+    icon: <AppstoreOutlined />,
   },
   {
     text: 'AGN',
@@ -41,7 +50,7 @@ export default (props: { children: React.ReactNode }) => {
       </Sider>
 
       <Layout className={styles['site-layout']}>
-        <Content style={{ margin: '0 16px' }}>{props.children}</Content>
+        <Content style={{ margin: '16px' }}>{props.children}</Content>
         <Footer style={{ textAlign: 'center' }}>@2020 EpicData</Footer>
       </Layout>
     </Layout>
